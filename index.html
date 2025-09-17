@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UniWise Chat</title>
+
+  <!-- Bootstrap Icons -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    rel="stylesheet"
+  />
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <!-- Toggle Button (always pinned left) -->
+  <div class="toggle-btn">
+    <i class="bi bi-list"></i>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar collapsed d-flex flex-column">
+    <!-- Logo -->
+    <div class="logo text-center my-3">
+      <img src="assets/images/uniwiselogo.jpg" alt="Logo" class="img-fluid" />
+      <h1 class="title mt-2 label">UniWise</h1>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-grow-1">
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><i class="bi bi-gear"></i><span class="label">Settings</span></li>
+        <li class="nav-item mb-2"><i class="bi bi-clock-history"></i><span class="label">History</span></li>
+        <li class="nav-item mb-2"><i class="bi bi-book"></i><span class="label">Resources</span></li>
+      </ul>
+    </nav>
+
+    <!-- New Chat Button -->
+    <button class="new-chat">
+      <i class="bi bi-plus-circle"></i><span class="label">New Chat</span>
+    </button>
+  </div>
+
+  <!-- Chat Container -->
+  <div class="chat-container d-flex justify-content-center align-items-center">
+    <div class="chat-box">
+      <div class="chat-area"></div>
+
+      <!-- Suggested Questions -->
+      <div class="suggestions">
+        <div class="suggestion-header">
+          <span>Suggested Questions</span>
+          <i class="bi bi-x close-suggestions"></i>
+        </div>
+        <div class="suggestion-buttons">
+          <button>What courses do you offer?</button>
+          <button>How can I apply?</button>
+          <button>What are the tuition fees?</button>
+          <button>Where is the campus located?</button>
+          <button>Is there an entrance exam?</button>
+        </div>
+      </div>
+
+      <!-- Input Area -->
+      <div class="input-area d-flex">
+        <input type="text" placeholder="Type a message..." />
+        <button class="send-btn"><i class="bi bi-send-fill"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom JS -->
+  <script src="assets/js/script.js"></script>
+</body>
+</html>
