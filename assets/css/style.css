@@ -18,7 +18,7 @@
 body {
   display: flex;
   height: 100vh;
-  background: url("bg.jpg") no-repeat center center fixed;
+  background: url("../images/bg.jpg") no-repeat center center fixed;
   background-size: cover;
 }
 
@@ -429,3 +429,4 @@ nav ul li span {
     transition: none !important;
   }
 }
+
