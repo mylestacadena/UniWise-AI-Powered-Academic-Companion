@@ -25,8 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
     sidebar.classList.toggle("collapsed");
   });
 
-  // Send message
-  function sendMessage() {
+  // Send message from RASA
+  async function sendMessage() {
     const message = inputField.value.trim();
     if (!message) return;
 
@@ -45,18 +45,48 @@ document.addEventListener("DOMContentLoaded", () => {
     chatArea.appendChild(typing);
     chatArea.scrollTop = chatArea.scrollHeight;
 
-    // Fake bot reply
-    setTimeout(() => {
+    try {
+      const response = await fetch("http://localhost:5005/webhooks/rest/webhook", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sender: "user", message: message }),
+      });
+
+      const data = await response.json();
       typing.remove();
+
+      if (data.length > 0) {
+        data.forEach((msg) => {
+          if (msg.text) {
+            const botMsg = document.createElement("div");
+            botMsg.classList.add("bot-msg");
+            botMsg.textContent = msg.text;
+            chatArea.appendChild(botMsg);
+          }
+        });
+      } else {
+        const botMsg = document.createElement("div");
+        botMsg.classList.add("bot-msg");
+        botMsg.textContent = "Sorry, I didn’t understand that.";
+        chatArea.appendChild(botMsg);
+      }
+
+      chatArea.scrollTop = chatArea.scrollHeight;
+    } catch (err) {
+      typing.remove();
+      console.error("Error:", err);
       const botMsg = document.createElement("div");
       botMsg.classList.add("bot-msg");
-      botMsg.textContent = "🤖 This is a bot reply.";
+      botMsg.textContent = "⚠️ Cannot connect to server.";
       chatArea.appendChild(botMsg);
       chatArea.scrollTop = chatArea.scrollHeight;
-    }, 1000);
+    }
   }
 
+  // Send button click
   sendBtn.addEventListener("click", sendMessage);
+
+  // Enter key press
   inputField.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
