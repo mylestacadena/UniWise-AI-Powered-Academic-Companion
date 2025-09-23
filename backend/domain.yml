@@ -1,0 +1,144 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - help
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+  - tuition_fee_inquiry
+  - payment_methods
+  - enrollment_schedule
+  - announcements
+  - ask_address
+  - ask_who_can_apply
+  - ask_strands
+  - ask_eligibility
+  - ask_humss
+  - ask_stem
+  - ask_switch_strands
+  - ask_class_size
+  - ask_learning_modes
+  - ask_uniform_cost
+  - ask_module_availability
+  - ask_scholarship
+  - provide_incident_type   
+  - provide_learning_mode    
+  - provide_appeal_decision 
+  - start_disciplinary_procedure 
+
+entities:
+  - incident_type
+  - learning_mode
+  - appeal_decision
+
+slots:
+  incident_type:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: incident_type
+
+  learning_mode:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: learning_mode
+
+  appeal_decision:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: appeal_decision
+
+
+responses:
+  utter_greet:
+    - text: "Hi! Great to see you. How are you feeling today?"
+    - text: "Hey! How’s it going? Been busy?"
+    - text: "Hello! Nice to see you again. How are you feeling?"
+
+  utter_goodbye:
+    - text: "Goodbye! Have a great day 😊."
+    - text: "Goodbye! Hope things go well for you today!"
+    - text: "Goodbye! Stay focused and keep pushing forward!"
+
+  utter_help:
+    - text: "Hi there! I’m here to assist you with anything about enrollment, fees, strands, or other school details. How can I help today?"
+
+  utter_mood_great:
+    - text: "Glad to hear that! How can I help you today?"
+
+  utter_mood_unhappy:
+    - text: "I'm sorry to hear that. Maybe I can help with some school info?"
+
+  utter_bot_challenge:
+    - text: "Yes, I am a bot, but I'm here to help you with school-related questions!"
+
+  utter_tuition_fee_inquiry:
+    - text: "The tuition fee varies depending on your program. Please check our official website or registrar’s office for details."
+
+  utter_payment_methods:
+    - text: "You can pay via cash, bank transfer, or online platforms such as GCash."
+
+  utter_enrollment_schedule:
+    - text: "Enrollment usually opens in July for the first semester and January for the second semester."
+
+  utter_announcements:
+    - text: "You can check the latest announcements on our official website or student portal."
+
+  utter_ask_address:
+    - text: "Our school is located at Tincoco St., Campo Santo, Brgy. Poblacion, City of Bacoor, Cavite 4102."
+
+  utter_ask_who_can_apply:
+    - text: "All incoming Grade 11 and 12 transferee Filipino or foreign students for S.Y. 2025-2026 are welcome to apply."
+
+  utter_ask_strands:
+    - text: "We offer academic strands such as STEM and HUMSS."
+
+  utter_eligibility_requirements:
+    - text: "If you’re interested in HUMSS, there aren’t any eligibility requirements. For STEM, you’ll need a general weighted average of 85 or higher in all subjects."
+
+  utter_humss_details:
+    - text: "For HUMSS, there are no eligibility requirements. Anyone can join this strand."
+    
+  utter_stem_details:
+    - text: "For STEM, you need a general weighted average of 85 or higher in all subjects to qualify."
+    
+  utter_ask_switch_strands:
+    - text: "Yes, but you will have to take irregular classes for the subjects you may have missed."
+
+  utter_ask_class_size:
+    - text: "Both Grade 11 and 12 have 30 to 40 students per section."
+
+  utter_ask_learning_modes:
+    - text: "We offer flexible learning modes. Students can join online synchronous classes, or pick up digital modules for remote offline learning."
+
+  utter_ask_uniform_cost:
+    - text: "Uniform prices depend on the student’s size. Please contact the school admin for details."
+
+  utter_ask_module_availability:
+    - text: "Books are available and can be accessed at the Learning Resources Management and Development System (LRMDS)."
+
+  utter_ask_scholarship:
+    - text: "Currently, we do not offer any scholarships."
+  
+
+
+forms:
+  disciplinary_procedure_form:
+    required_slots:
+      - incident_type
+      - learning_mode
+      - appeal_decision
+
+actions:
+  - action_submit_disciplinary_procedure
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

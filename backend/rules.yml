@@ -1,0 +1,115 @@
+version: "3.1"
+
+rules:
+  # Greeting and help
+  - rule: Greet
+    steps:
+      - intent: greet
+      - action: utter_greet
+
+  - rule: Help
+    steps:
+      - intent: help
+      - action: utter_help
+
+  # Saying goodbye
+  - rule: Say goodbye
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye
+
+  # Mood responses
+  - rule: User is happy
+    steps:
+      - intent: mood_great
+      - action: utter_mood_great
+
+  - rule: User is unhappy
+    steps:
+      - intent: mood_unhappy
+      - action: utter_mood_unhappy
+
+  # Bot challenge
+  - rule: Bot challenge
+    steps:
+      - intent: bot_challenge
+      - action: utter_bot_challenge
+
+  # Tuition & payments
+  - rule: Tuition fee inquiry
+    steps:
+      - intent: tuition_fee_inquiry
+      - action: utter_tuition_fee_inquiry
+
+  - rule: Payment methods inquiry
+    steps:
+      - intent: payment_methods
+      - action: utter_payment_methods
+
+  # Announcements & enrollment
+  - rule: Announcements request
+    steps:
+      - intent: announcements
+      - action: utter_announcements
+
+  - rule: Enrollment schedule inquiry
+    steps:
+      - intent: enrollment_schedule
+      - action: utter_enrollment_schedule
+
+  # FAQ rules
+  - rule: Respond to address question
+    steps:
+      - intent: ask_address
+      - action: utter_ask_address
+
+  - rule: Respond to eligibility question
+    steps:
+      - intent: ask_who_can_apply
+      - action: utter_ask_who_can_apply
+
+  - rule: Respond to strands question
+    steps:
+      - intent: ask_strands
+      - action: utter_ask_strands
+
+  - rule: Respond to eligibility questions
+    steps:
+    - intent: ask_eligibility
+    - action: utter_eligibility_requirements
+
+  - rule: Respond to switch strands question
+    steps:
+      - intent: ask_switch_strands
+      - action: utter_ask_switch_strands
+
+  - rule: Respond to class size question
+    steps:
+      - intent: ask_class_size
+      - action: utter_ask_class_size
+
+  - rule: Respond to learning modes question
+    steps:
+      - intent: ask_learning_modes
+      - action: utter_ask_learning_modes
+
+  - rule: Respond to uniform cost question
+    steps:
+      - intent: ask_uniform_cost
+      - action: utter_ask_uniform_cost
+
+  - rule: Respond to module availability question
+    steps:
+      - intent: ask_module_availability
+      - action: utter_ask_module_availability
+
+  - rule: Respond to scholarship question
+    steps:
+      - intent: ask_scholarship
+      - action: utter_ask_scholarship
+
+  - rule: Activate disciplinary procedure form
+    steps:
+      - intent: start_disciplinary_procedure
+      - action: disciplinary_procedure_form
+      - active_loop: disciplinary_procedure_form

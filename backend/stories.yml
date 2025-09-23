@@ -1,0 +1,17 @@
+version: "3.1"
+
+stories:
+  - story: guided disciplinary procedure
+    steps:
+      - intent: start_disciplinary_procedure
+      - action: disciplinary_procedure_form
+      - active_loop: disciplinary_procedure_form
+
+  - story: eligibility follow-up
+    steps:
+    - intent: ask_eligibility
+    - action: utter_eligibility_requirements
+    - intent: ask_humss
+    - action: utter_humss_details
+    - intent: ask_stem
+    - action: utter_stem_details

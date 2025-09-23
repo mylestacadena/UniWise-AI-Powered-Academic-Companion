@@ -1,0 +1,197 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - hello
+    - hi
+    - hey
+    - good morning
+    - good afternoon
+    - hi there
+    - hello bot
+    - hey there
+
+- intent: goodbye
+  examples: |
+    - bye
+    - goodbye
+    - see you
+    - talk to you later
+    - farewell
+    - catch you later
+
+- intent: help
+  examples: |
+    - I need help
+    - Can you assist me?
+    - How do I use this bot?
+    - Help me please
+    - Can you guide me?
+
+- intent: mood_great
+  examples: |
+    - I am feeling great
+    - I am happy
+    - Feeling good today
+    - I am awesome
+    - I'm doing well
+
+- intent: mood_unhappy
+  examples: |
+    - I am sad
+    - Not feeling well
+    - I am unhappy
+    - Feeling bad today
+    - I'm frustrated
+
+- intent: bot_challenge
+  examples: |
+    - Are you a bot?
+    - Are you human?
+    - Can you really answer my questions?
+    - Are you real?
+    - Are you smart?
+
+- intent: tuition_fee_inquiry
+  examples: |
+    - How much is the tuition fee
+    - What is the tuition fee
+    - Tell me about the fees
+    - Can you give me tuition details
+    - Tuition cost
+    - Fee information
+
+- intent: payment_methods
+  examples: |
+    - How can I pay
+    - What are the payment options
+    - Do you accept GCash
+    - Can I pay online
+    - Payment methods available
+    - How do I pay the fees
+
+- intent: enrollment_schedule
+  examples: |
+    - When is the enrollment
+    - What is the enrollment schedule
+    - When can I enroll
+    - Give me the enrollment dates
+    - Enrollment period
+    - Enrollment timetable
+
+- intent: announcements
+  examples: |
+    - What are the latest announcements
+    - Give me the updates
+    - Is there any news
+    - School announcements
+    - Any new information
+    - Latest news from school
+
+- intent: ask_address
+  examples: |
+    - What is the address of the school
+    - Where is the school located
+    - Can you tell me the school address
+    - School location
+    - Address of Senior High School within Bacoor Elementary School
+
+- intent: ask_who_can_apply
+  examples: |
+    - Who can apply
+    - Eligibility for students
+    - Can foreign students apply
+    - Who is allowed to enroll
+    - Admission requirements
+
+- intent: ask_strands
+  examples: |
+    - What academic strands do you offer
+    - Do you have STEM or HUMSS
+    - Available programs
+    - Available strands
+    - Which strands are available
+    - Academic tracks offered
+    - Can I take STEM or HUMSS
+
+- intent: ask_eligibility
+  examples: |
+    - What are the eligibility requirements for your programs?
+    - Do you have requirements for HUMSS or STEM?
+    - Tell me the requirements for STEM and HUMSS
+    - Who can join the HUMSS strand?
+    - What grade do I need to join STEM?
+
+- intent: ask_switch_strands
+  examples: |
+    - Can I switch strands mid-semester
+    - Is changing strands allowed
+    - Can I move from STEM to HUMSS
+    - Switching academic strands
+    - Strand transfer rules
+
+- intent: ask_class_size
+  examples: |
+    - What is the class size
+    - How many students per section
+    - Class population
+    - Number of students in a section
+    - Average section size
+
+- intent: ask_learning_modes
+  examples: |
+    - What learning modes are available
+    - Can I study remotely
+    - Online classes
+    - Remote learning options
+    - Flexible learning modes
+
+- intent: ask_uniform_cost
+  examples: |
+    - How much do uniforms cost
+    - Uniform prices
+    - Cost of school uniforms
+    - Price for uniforms
+    - Uniform fee
+
+- intent: ask_scholarship
+  examples: |
+    - Do you provide scholarships
+    - Are there any scholarships
+    - Scholarship availability
+    - Can I get a scholarship
+    - Do you offer financial aid
+
+- intent: ask_module_availability
+  examples: |
+    - Are learning modules available
+    - Can I access the books
+    - Availability of learning materials
+    - Can I get modules
+    - Are study modules provided
+
+- intent: start_disciplinary_procedure
+  examples: |
+    - I want to report a bullying case
+    - Can you guide me through the disciplinary procedure
+    - Start the procedure for student discipline
+    - How do I file a report
+    - Help me with the complaint process
+
+- intent: provide_incident_type
+  examples: |
+    - I want to report a [theft](incident_type)
+    - The issue is about [vandalism](incident_type)
+
+- intent: provide_learning_mode
+  examples: |
+    - My preferred mode is [online](learning_mode)
+    - I want [face-to-face](learning_mode) classes
+
+- intent: provide_appeal_decision
+  examples: |
+    - I want to [approve](appeal_decision) the appeal
+    - I [reject](appeal_decision) the request
+
+
