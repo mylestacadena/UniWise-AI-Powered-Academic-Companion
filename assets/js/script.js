@@ -26,9 +26,9 @@ function speakBotMessage(text) {
   const selectedVoice = voices.find(v => v.name === "Google UK English Female") || voices[0];
   utter.voice = selectedVoice;
 
-  // Randomized kid-owl style
-  utter.rate = 1.1 + Math.random() * 0.1;   // 1.1–1.2 speed
-  utter.pitch = 1.3 + Math.random() * 0.2;  // 1.3–1.5 pitch
+  // Slower, kid-friendly owl style
+  utter.rate = 0.9 + Math.random() * 0.05;   // 0.9–0.95 speed (slower)
+  utter.pitch = 1.3 + Math.random() * 0.2;   // 1.3–1.5 pitch (still playful)
 
   synth.speak(utter);
 }
@@ -175,6 +175,7 @@ window.speechSynthesis.onvoiceschanged = () => {
     suggestions.style.display = "none";
   });
 });
+
 
 
 
