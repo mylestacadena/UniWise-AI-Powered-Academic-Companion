@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeSuggestions = document.querySelector(".close-suggestions");
 
 // ========================
-// Owl-Kid Text-to-Speech Function (Default + Pause)
+// Owl-Kid Text-to-Speech Function (Default Voice Settings)
 // ========================
 function speakBotMessage(text) {
   if (!text) return;
@@ -26,17 +26,9 @@ function speakBotMessage(text) {
   const selectedVoice = voices.find(v => v.name === "Google UK English Female") || voices[0];
   utter.voice = selectedVoice;
 
-  // Default rate and pitch
+  // Default rate and pitch (normal, no tweaks)
   utter.rate = 1.0;
   utter.pitch = 1.0;
-
-  // Add slight pause at sentence boundaries
-  utter.onboundary = function(event) {
-    if (event.name === "sentence") {
-      synth.pause();
-      setTimeout(() => synth.resume(), 50 + Math.random() * 50); // 50–100ms pause
-    }
-  };
 
   synth.speak(utter);
 }
@@ -183,6 +175,7 @@ window.speechSynthesis.onvoiceschanged = () => {
     suggestions.style.display = "none";
   });
 });
+
 
 
 
