@@ -75,68 +75,113 @@
   <script src="assets/js/script.js"></script>
 
   <script>
-  // Function to speak text using browser TTS
-  function speakBotMessage(text) {
-    const synth = window.speechSynthesis;
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = "en-US";
-    synth.speak(utter);
-  }
+// ========================
+// Text-to-Speech Function
+// ========================
+function speakBotMessage(text) {
+  if (!text) return;
+  const synth = window.speechSynthesis;
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = "en-US";
+  utter.rate = 1;   // speed of speech
+  utter.pitch = 1;  // pitch of voice
+  synth.speak(utter);
+}
 
-  // Send message to Rasa via REST API
-  async function sendMessageToRasa(message) {
-    const response = await fetch("http://localhost:5005/webhooks/rest/webhook", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ sender: "user", message: message })
-    });
-    const data = await response.json();
-    
-    // Handle bot responses
-    data.forEach(reply => {
-      if (reply.text) {
-        // Show bot message in your chat area
-        const chatArea = document.querySelector(".chat-area");
-        const botMsg = document.createElement("div");
-        botMsg.classList.add("bot-message");
-        botMsg.textContent = reply.text;
-        chatArea.appendChild(botMsg);
-        chatArea.scrollTop = chatArea.scrollHeight;
+// ========================
+// Display Bot Message
+// ========================
+function displayBotMessage(text) {
+  const chatArea = document.querySelector(".chat-area");
+  const botMsg = document.createElement("div");
+  botMsg.classList.add("bot-message");
+  botMsg.textContent = text;
+  chatArea.appendChild(botMsg);
+  chatArea.scrollTop = chatArea.scrollHeight;
 
-        // Speak the bot message
-        speakBotMessage(reply.text);
+  // Speak the message
+  speakBotMessage(text);
+}
+
+// ========================
+// Display User Message
+// ========================
+function displayUserMessage(text) {
+  const chatArea = document.querySelector(".chat-area");
+  const userMsg = document.createElement("div");
+  userMsg.classList.add("user-message");
+  userMsg.textContent = text;
+  chatArea.appendChild(userMsg);
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+// ========================
+// Send Message to Rasa
+// ========================
+async function sendMessageToRasa(message) {
+  const response = await fetch("http://localhost:5005/webhooks/rest/webhook", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ sender: "user", message: message })
+  });
+
+  const data = await response.json();
+
+  data.forEach(reply => {
+    // 1. Regular text messages
+    if (reply.text) {
+      displayBotMessage(reply.text);
+    }
+
+    // 2. Buttons
+    if (reply.buttons) {
+      reply.buttons.forEach(button => {
+        if (button.title) displayBotMessage(button.title);
+      });
+    }
+
+    // 3. Custom payloads (if using Rasa custom messages)
+    if (reply.custom) {
+      if (reply.custom.text) displayBotMessage(reply.custom.text);
+      if (reply.custom.buttons) {
+        reply.custom.buttons.forEach(btn => {
+          if (btn.title) displayBotMessage(btn.title);
+        });
       }
-    });
-  }
-
-  // Listen to Send button
-  document.getElementById("send-btn").addEventListener("click", () => {
-    const input = document.getElementById("user-input");
-    const message = input.value.trim();
-    if (message) {
-      // Show user message in chat area
-      const chatArea = document.querySelector(".chat-area");
-      const userMsg = document.createElement("div");
-      userMsg.classList.add("user-message");
-      userMsg.textContent = message;
-      chatArea.appendChild(userMsg);
-      chatArea.scrollTop = chatArea.scrollHeight;
-
-      // Send message to Rasa
-      sendMessageToRasa(message);
-      input.value = "";
     }
   });
+}
 
-  // Optional: allow Enter key to send
-  document.getElementById("user-input").addEventListener("keydown", (e) => {
-    if (e.key === "Enter") document.getElementById("send-btn").click();
-  });
+// ========================
+// Handle User Input
+// ========================
+function handleUserInput() {
+  const input = document.getElementById("user-input");
+  const message = input.value.trim();
+  if (!message) return;
+
+  displayUserMessage(message);
+  sendMessageToRasa(message);
+  input.value = "";
+}
+
+// ========================
+// Event Listeners
+// ========================
+// Send button
+document.getElementById("send-btn").addEventListener("click", handleUserInput);
+
+// Enter key
+document.getElementById("user-input").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") handleUserInput();
+});
+
 </script>
 
   
 </body>
 </html>
+
 
 
 
