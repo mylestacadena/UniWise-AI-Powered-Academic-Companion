@@ -9,27 +9,59 @@ document.addEventListener("DOMContentLoaded", () => {
   const suggestionBtns = document.querySelectorAll(".suggestion-buttons button");
   const closeSuggestions = document.querySelector(".close-suggestions");
 
-  // Default bot message
+  // ========================
+  // Text-to-Speech Function
+  // ========================
+  function speakBotMessage(text) {
+    if (!text) return;
+    const synth = window.speechSynthesis;
+    synth.cancel(); // stop previous speech if any
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = "en-US";
+    utter.rate = 1;
+    utter.pitch = 1;
+    synth.speak(utter);
+  }
+
+  // ========================
+  // Display Bot Message
+  // ========================
+  function displayBotMessage(text) {
+    const botMsg = document.createElement("div");
+    botMsg.classList.add("bot-msg");
+    botMsg.textContent = text;
+    chatArea.appendChild(botMsg);
+    chatArea.scrollTop = chatArea.scrollHeight;
+
+    // Speak the message
+    speakBotMessage(text);
+  }
+
+  // ========================
+  // Display Default Message
+  // ========================
   function addDefaultMessage() {
     chatArea.innerHTML = "";
-    const defaultMsg = document.createElement("div");
-    defaultMsg.classList.add("bot-msg");
-    defaultMsg.textContent = "👋 Welcome! You may ask anything.";
-    chatArea.appendChild(defaultMsg);
+    displayBotMessage("👋 Welcome! You may ask anything.");
   }
 
   addDefaultMessage();
 
+  // ========================
   // Toggle sidebar
+  // ========================
   toggleBtn.addEventListener("click", () => {
     sidebar.classList.toggle("collapsed");
   });
 
-  // Send message from RASA
+  // ========================
+  // Send message to Rasa
+  // ========================
   async function sendMessage() {
     const message = inputField.value.trim();
     if (!message) return;
 
+    // Display user message
     const userMsg = document.createElement("div");
     userMsg.classList.add("user-msg");
     userMsg.textContent = message;
@@ -57,36 +89,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (data.length > 0) {
         data.forEach((msg) => {
-          if (msg.text) {
-            const botMsg = document.createElement("div");
-            botMsg.classList.add("bot-msg");
-            botMsg.textContent = msg.text;
-            chatArea.appendChild(botMsg);
+          // Regular text
+          if (msg.text) displayBotMessage(msg.text);
+
+          // Buttons (if any)
+          if (msg.buttons) {
+            msg.buttons.forEach((btn) => {
+              if (btn.title) displayBotMessage(btn.title);
+            });
+          }
+
+          // Custom payloads
+          if (msg.custom) {
+            if (msg.custom.text) displayBotMessage(msg.custom.text);
+            if (msg.custom.buttons) {
+              msg.custom.buttons.forEach((btn) => {
+                if (btn.title) displayBotMessage(btn.title);
+              });
+            }
           }
         });
       } else {
-        const botMsg = document.createElement("div");
-        botMsg.classList.add("bot-msg");
-        botMsg.textContent = "Sorry, I didn’t understand that.";
-        chatArea.appendChild(botMsg);
+        displayBotMessage("Sorry, I didn’t understand that.");
       }
-
-      chatArea.scrollTop = chatArea.scrollHeight;
     } catch (err) {
       typing.remove();
       console.error("Error:", err);
-      const botMsg = document.createElement("div");
-      botMsg.classList.add("bot-msg");
-      botMsg.textContent = "⚠️ Cannot connect to server.";
-      chatArea.appendChild(botMsg);
-      chatArea.scrollTop = chatArea.scrollHeight;
+      displayBotMessage("⚠️ Cannot connect to server.");
     }
   }
 
+  // ========================
   // Send button click
+  // ========================
   sendBtn.addEventListener("click", sendMessage);
 
+  // ========================
   // Enter key press
+  // ========================
   inputField.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -94,13 +134,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // ========================
   // New chat resets everything
+  // ========================
   newChatBtn.addEventListener("click", () => {
     addDefaultMessage();
     suggestions.style.display = "block";
   });
 
+  // ========================
   // Suggested questions
+  // ========================
   suggestionBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
       inputField.value = btn.textContent;
@@ -108,10 +152,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // ========================
   // Close suggestions
+  // ========================
   closeSuggestions.addEventListener("click", () => {
     suggestions.style.display = "none";
   });
 });
-
-
