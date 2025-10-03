@@ -27,8 +27,8 @@ function speakBotMessage(text) {
   utter.voice = selectedVoice;
 
   // Slower, kid-friendly owl style
-  utter.rate = 0.9 + Math.random() * 0.05;   // 0.9–0.95 speed (slower)
-  utter.pitch = 1.3 + Math.random() * 0.2;   // 1.3–1.5 pitch (still playful)
+  utter.rate = 0.75 + Math.random() * 0.1;   // 0.75–0.85 speed (slower)
+  utter.pitch = 1.3 + Math.random() * 0.2;   // 1.3–1.5 pitch (playful)
 
   synth.speak(utter);
 }
@@ -175,6 +175,7 @@ window.speechSynthesis.onvoiceschanged = () => {
     suggestions.style.display = "none";
   });
 });
+
 
 
 
