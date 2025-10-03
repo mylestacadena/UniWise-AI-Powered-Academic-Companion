@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeSuggestions = document.querySelector(".close-suggestions");
 
 // ========================
-// Owl-Kid Text-to-Speech Function (Higher Pitch)
+// Owl-Kid Text-to-Speech Function (Default + Pause)
 // ========================
 function speakBotMessage(text) {
   if (!text) return;
@@ -19,22 +19,22 @@ function speakBotMessage(text) {
   synth.cancel(); // stop any previous speech
 
   const utter = new SpeechSynthesisUtterance(text);
-  utter.lang = "en-US";
+  utter.lang = "en-GB"; // UK English
 
   // Pick Google UK English Female if available
   const voices = synth.getVoices();
   const selectedVoice = voices.find(v => v.name === "Google UK English Female") || voices[0];
   utter.voice = selectedVoice;
 
-  // Kid-owl style: moderate speed + brighter pitch
-  utter.rate = 0.9 + Math.random() * 0.1;   // 0.9–1.0 (natural speed)
-  utter.pitch = 1.6 + Math.random() * 0.2;  // 1.6–1.8 (higher pitch, child-like)
+  // Default rate and pitch
+  utter.rate = 1.0;
+  utter.pitch = 1.0;
 
-  // Keep slight pause for natural delivery
+  // Add slight pause at sentence boundaries
   utter.onboundary = function(event) {
     if (event.name === "sentence") {
       synth.pause();
-      setTimeout(() => synth.resume(), 40 + Math.random() * 40);
+      setTimeout(() => synth.resume(), 50 + Math.random() * 50); // 50–100ms pause
     }
   };
 
@@ -183,6 +183,7 @@ window.speechSynthesis.onvoiceschanged = () => {
     suggestions.style.display = "none";
   });
 });
+
 
 
 
