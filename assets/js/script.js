@@ -18,8 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
     synth.cancel(); // stop previous speech if any
     const utter = new SpeechSynthesisUtterance(text);
     utter.lang = "en-US";
-    utter.rate = 1;
-    utter.pitch = 1;
+    utter.rate = 1.1;   // slightly faster than normal
+    utter.pitch = 1.3;  // slightly higher pitch for playful tone
     synth.speak(utter);
   }
 
@@ -159,3 +159,4 @@ document.addEventListener("DOMContentLoaded", () => {
     suggestions.style.display = "none";
   });
 });
+
