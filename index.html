@@ -1,85 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UniWise Chat</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniWise</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
-  <!-- Bootstrap Icons -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-    rel="stylesheet"
-  />
-
-  <!-- Custom Styles -->
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <!-- Old file path for CSS -->
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-  <!-- Toggle Button (always pinned left) -->
-  <div class="toggle-btn">
-    <i class="bi bi-list"></i>
-  </div>
-
   <!-- Sidebar -->
-  <div class="sidebar collapsed d-flex flex-column">
-    <!-- Logo -->
-    <div class="logo text-center my-3">
-      <img src="assets/images/uniwiselogo.jpg" alt="Logo" class="img-fluid" />
-      <h1 class="title mt-2 label">UniWise</h1>
+  <div class="sidebar">
+    <div class="logo">
+      <img src="assets/images/uniwiselogo.jpg" alt="Logo">
+      <h2>UniWise</h2>
     </div>
+    <ul class="menu">
+      <li><a href="index.html"><i class="bi bi-house"></i><span class="label">Home</span></a></li>
+      <li><a href="history.html"><i class="bi bi-clock-history"></i><span class="label">History</span></a></li>
+      <li><a href="resources.html"><i class="bi bi-book"></i><span class="label">Resources</span></a></li>
+      <li><a href="#" data-bs-toggle="modal" data-bs-target="#settingsModal"><i class="bi bi-gear"></i><span class="label">Settings</span></a></li>
+    </ul>
+  </div>
 
-    <!-- Navigation -->
-    <nav class="flex-grow-1">
-      <ul class="nav flex-column">
-        <li class="nav-item mb-2"><i class="bi bi-gear"></i><span class="label">Settings</span></li>
-        <li class="nav-item mb-2"><i class="bi bi-clock-history"></i><span class="label">History</span></li>
-        <li class="nav-item mb-2"><i class="bi bi-book"></i><span class="label">Resources</span></li>
+  <!-- Main content -->
+  <div class="chat-area container">
+    <h3>Chat</h3>
+    <div id="chatBox" class="border p-3 rounded mb-3"></div>
+
+    <!-- Old Suggested Questions -->
+    <div id="suggestions" class="mb-3">
+      <h4>Suggested Questions</h4>
+      <ul>
+        <li><button class="btn btn-outline-primary btn-sm">What are effective study techniques?</button></li>
+        <li><button class="btn btn-outline-primary btn-sm">How do I stay motivated in school?</button></li>
+        <li><button class="btn btn-outline-primary btn-sm">Tips for managing time effectively?</button></li>
+        <li><button class="btn btn-outline-primary btn-sm">How to prepare for exams efficiently?</button></li>
+        <li><button class="btn btn-outline-primary btn-sm">Best ways to balance school and personal life?</button></li>
       </ul>
-    </nav>
+      <button id="closeSuggestions" class="btn btn-sm btn-danger">Close</button>
+    </div>
 
-    <!-- New Chat Button -->
-    <button class="new-chat">
-      <i class="bi bi-plus-circle"></i><span class="label">New Chat</span>
-    </button>
+    <!-- Input -->
+    <div class="d-flex">
+      <input type="text" id="chatInput" class="form-control me-2" placeholder="Type a message...">
+      <button id="sendBtn" class="btn btn-primary">Send</button>
+    </div>
   </div>
 
-  <!-- Chat Container -->
-  <div class="chat-container d-flex justify-content-center align-items-center">
-    <div class="chat-box">
-      <div class="chat-area"></div>
-
-      <!-- Suggested Questions -->
-      <div class="suggestions">
-        <div class="suggestion-header">
-          <span>Suggested Questions</span>
-          <i class="bi bi-x close-suggestions"></i>
+  <!-- Settings Modal -->
+  <div class="modal fade" id="settingsModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Settings</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-        <div class="suggestion-buttons">
-          <button>What academic strands do you offer?</button>
-          <button>How can I apply?</button>
-          <button>What are the tuition fees?</button>
-          <button>Where is the campus located?</button>
-          <button>Is there an entrance exam?</button>
-        </div>
-      </div>
+        <div class="modal-body">
+          <label for="fontSize">Font Size</label>
+          <input type="range" id="fontSize" min="12" max="24" value="16" class="form-range">
 
-      <!-- Input Area -->
-      <div class="input-area d-flex">
-        <input type="text" placeholder="Type a message..." id="user-input" />
-        <button class="send-btn" id="send-btn"><i class="bi bi-send-fill"></i></button>
+          <label for="glowColor" class="mt-3">Theme Glow Color</label>
+          <input type="color" id="glowColor" class="form-control form-control-color">
+
+          <div class="mt-3">
+            <button id="saveSettings" class="btn btn-success">Save</button>
+            <button id="resetSettings" class="btn btn-warning">Reset</button>
+            <button id="clearHistory" class="btn btn-danger">Clear History</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Custom JS -->
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Old file path for JS -->
   <script src="assets/js/script.js"></script>
-
-  <script>
-</script>
 </body>
 </html>
-
-
-
-
-
