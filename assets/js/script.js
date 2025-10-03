@@ -18,26 +18,34 @@ function speakBotMessage(text) {
   const synth = window.speechSynthesis;
   synth.cancel(); // stop any previous speech
 
-  // Add a subtle "hoot" effect after periods for owl personality
-  text = text.replace(/\./g, ". 🦉"); 
+  // Insert subtle owl "hoo" at random points
+  text = text.replace(/\./g, () => {
+    return Math.random() < 0.5 ? ". Hoo hoo! 🦉" : ".";
+  });
 
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = "en-US";
 
-  // Kid-like but owl-inspired
-  utter.rate = 1.1 + Math.random() * 0.1;   // 1.1–1.2 speed
-  utter.pitch = 1.25 + Math.random() * 0.15; // 1.25–1.4 pitch
+  // Pick a playful/female voice if available
+  const voices = synth.getVoices();
+  const selectedVoice =
+    voices.find(v =>
+      (v.name.toLowerCase().includes("female") || v.name.toLowerCase().includes("child") || v.name.toLowerCase().includes("zira"))
+      && v.lang === "en-US"
+    ) || voices[0]; // fallback to first voice
+  utter.voice = selectedVoice;
 
-  // Optional: slight delay between sentences (more owl-like pauses)
-  utter.onboundary = function(event) {
-    if (event.name === "word" && Math.random() < 0.02) {
-      synth.pause();
-      setTimeout(() => synth.resume(), 50 + Math.random() * 100);
-    }
-  };
+  // Randomized kid-owl style
+  utter.rate = 1.1 + Math.random() * 0.1;   // 1.1–1.2 speed
+  utter.pitch = 1.3 + Math.random() * 0.2;  // 1.3–1.5 pitch
 
   synth.speak(utter);
 }
+
+// Ensure voices are loaded (important on some browsers)
+window.speechSynthesis.onvoiceschanged = () => {
+  console.log("Available voices:", window.speechSynthesis.getVoices());
+};
 
   // ========================
   // Display Bot Message
@@ -175,5 +183,6 @@ function speakBotMessage(text) {
     suggestions.style.display = "none";
   });
 });
+
 
 
