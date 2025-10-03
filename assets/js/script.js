@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeSuggestions = document.querySelector(".close-suggestions");
 
 // ========================
-// Owl-Kid Text-to-Speech Function (Balanced Speed)
+// Owl-Kid Text-to-Speech Function (Higher Pitch)
 // ========================
 function speakBotMessage(text) {
   if (!text) return;
@@ -26,9 +26,9 @@ function speakBotMessage(text) {
   const selectedVoice = voices.find(v => v.name === "Google UK English Female") || voices[0];
   utter.voice = selectedVoice;
 
-  // Kid-owl style: moderate speed + playful pitch
-  utter.rate = 0.9 + Math.random() * 0.1;   // 0.9–1.0 (closer to natural speed)
-  utter.pitch = 1.3 + Math.random() * 0.2;  // 1.3–1.5 pitch
+  // Kid-owl style: moderate speed + brighter pitch
+  utter.rate = 0.9 + Math.random() * 0.1;   // 0.9–1.0 (natural speed)
+  utter.pitch = 1.6 + Math.random() * 0.2;  // 1.6–1.8 (higher pitch, child-like)
 
   // Keep slight pause for natural delivery
   utter.onboundary = function(event) {
@@ -183,6 +183,7 @@ window.speechSynthesis.onvoiceschanged = () => {
     suggestions.style.display = "none";
   });
 });
+
 
 
 
