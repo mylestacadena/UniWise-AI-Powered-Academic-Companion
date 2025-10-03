@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniWise - Resources</title>
+
+  <!-- Favicon (same as main page) -->
+  <link rel="icon" type="image/png" href="uniwiselogo.jpg">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-dark text-light">
+
+  <!-- Toggle Button -->
+  <div class="toggle-btn">
+    <i class="bi bi-list"></i>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar collapsed d-flex flex-column">
+    <div class="logo">
+      <img src="uniwiselogo.jpg" alt="Logo" />
+      <h1 class="title label">UniWise</h1>
+    </div>
+
+    <nav class="flex-grow-1">
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2">
+          <a href="index.html">
+            <i class="bi bi-house"></i><span class="label">Home</span>
+          </a>
+        </li>
+        <li class="nav-item mb-2">
+          <a href="resources.html" class="active">
+            <i class="bi bi-book"></i><span class="label">Resources</span>
+          </a>
+        </li>
+        <li class="nav-item mb-2">
+          <a href="#" data-bs-toggle="modal" data-bs-target="#settingsModal">
+            <i class="bi bi-gear"></i><span class="label">Settings</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content container py-4">
+    <!-- Ribbon -->
+    <ul class="nav nav-tabs glassy-tabs mb-4" id="resourceTabs">
+      <li class="nav-item">
+        <button class="nav-link active" data-tab="news"><i class="bi bi-megaphone"></i> News</button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" data-tab="about"><i class="bi bi-info-circle"></i> About</button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" data-tab="contact"><i class="bi bi-telephone"></i> Contact</button>
+      </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div id="tabContent">
+      <!-- News Feed -->
+      <div class="tab-pane active" id="news">
+        <div class="post glassy-card mb-3 p-3 rounded">
+          <h5>📢 Announcement 1</h5>
+          <p>Classes are suspended tomorrow due to weather conditions.</p>
+        </div>
+        <div class="post glassy-card mb-3 p-3 rounded">
+          <h5>📢 Announcement 2</h5>
+          <p>Enrollment for second semester starts next week. Please check the student portal.</p>
+        </div>
+      </div>
+
+      <!-- About -->
+      <div class="tab-pane d-none" id="about">
+        <!-- Mission & Vision on top -->
+        <div class="glassy-card p-4 mb-3 rounded">
+          <h5>🎯 Mission</h5>
+          <p>To provide quality education that nurtures innovation and growth.</p>
+        </div>
+
+        <div class="glassy-card p-4 mb-3 rounded">
+          <h5>🌟 Vision</h5>
+          <p>A community of learners committed to excellence and leadership.</p>
+        </div>
+
+        <!-- Background -->
+        <div class="glassy-card p-4 mb-3 rounded">
+          <h4>🏫 School Background</h4>
+          <p>Senior High School within Bacoor Elementary School was established in 2016. It is one of the five public senior high schools in the Division of Bacoor City. It started catering to students under the STEM strand and later opened the HUMSS strand in 2020.</p>
+        </div>
+
+        <!-- Community -->
+        <div class="glassy-card p-4 mb-3 rounded">
+          <h5>🌍 Community Profile</h5>
+          <p>SHS within Bacoor ES was first housed in SHS Dulong Bayan together with two other SHSs. In June 2021, the school transferred and was housed within Bacoor ES. It was first named SHS Alima since Bacoor ES is situated in Barangay Alima, then later renamed to its current title.</p>
+        </div>
+
+        <!-- Political / Economic -->
+        <div class="glassy-card p-4 mb-3 rounded">
+          <h5>⚖️ Political / Economic Context</h5>
+          <p>The chairperson of the Local School Board is the City Mayor. The schools share the Special Education Fund (SEF). The Local Government Unit (LGU), together with the Provincial Government Unit (PGU), helps support the schools.</p>
+        </div>
+
+        <!-- Facilities with 3-photo layout -->
+        <div class="glassy-card p-4 mb-3 rounded">
+          <h5>🏢 School Facilities</h5>
+          <div class="facilities-grid">
+            <div class="facility-item">
+              <div class="facility-images">
+                <img src="uniwiselogo.jpg" alt="Guidance 1">
+                <img src="bg.jpg" alt="Guidance 2">
+                <img src="uniwiselogo.jpg" alt="Guidance 3">
+              </div>
+              <p class="facility-caption">Guidance Office</p>
+            </div>
+
+            <div class="facility-item">
+              <div class="facility-images">
+                <img src="uniwiselogo.jpg" alt="Library 1">
+                <img src="bg.jpg" alt="Library 2">
+                <img src="uniwiselogo.jpg" alt="Library 3">
+              </div>
+              <p class="facility-caption">Library</p>
+            </div>
+
+            <div class="facility-item">
+              <div class="facility-images">
+                <img src="uniwiselogo.jpg" alt="Science Lab 1">
+                <img src="bg.jpg" alt="Science Lab 2">
+                <img src="uniwiselogo.jpg" alt="Science Lab 3">
+              </div>
+              <p class="facility-caption">Science Laboratory</p>
+            </div>
+            <!-- Add more facility items here -->
+          </div>
+        </div>
+
+        <!-- Handbook -->
+        <div class="glassy-card p-4 rounded">
+          <h5>📘 E-Student Handbook</h5>
+          <a href="student-handbook.pdf" target="_blank" class="btn glassy-btn mt-2">View Handbook</a>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="tab-pane d-none" id="contact">
+        <div class="glassy-card p-3 rounded">
+          <h5>📞 Contact Us</h5>
+          <p>Email: support@uniwise.edu</p>
+          <p>Phone: (123) 456-7890</p>
+          <p>Address: University Ave, City, Country</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal fade" id="settingsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header">
+          <h5 class="modal-title">Customize Settings</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="fontSize" class="form-label">Font Size</label>
+            <input type="range" class="form-range" id="fontSize" min="10" max="24" value="14">
+          </div>
+          <div class="mb-3">
+            <label for="themeColor" class="form-label">Theme Glow Color</label>
+            <input type="color" class="form-control form-control-color" id="themeColor" value="#00ffff">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="saveSettings" class="btn glassy-btn">Save Changes</button>
+          <button id="resetSettings" class="btn glassy-btn">Reset to Default</button>
+          <button id="clearHistory" class="btn glassy-btn">Clear History</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap + Custom Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="resources.js"></script>
+</body>
+</html>
