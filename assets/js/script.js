@@ -1,94 +1,101 @@
+// script.js
 document.addEventListener("DOMContentLoaded", () => {
+  // ---------- Sidebar toggle ----------
   const sidebar = document.querySelector(".sidebar");
   const toggleBtn = document.querySelector(".toggle-btn");
-  const inputField = document.querySelector(".input-area input");
-  const sendBtn = document.querySelector(".send-btn");
-  const chatArea = document.querySelector(".chat-area");
-  const newChatBtn = document.querySelector(".new-chat");
-  const suggestions = document.querySelector(".suggestions");
-  const suggestionBtns = document.querySelectorAll(".suggestion-buttons button");
-  const closeSuggestions = document.querySelector(".close-suggestions");
+  if (toggleBtn && sidebar) {
+    toggleBtn.addEventListener("click", () => {
+      sidebar.classList.toggle("collapsed");
+    });
+  }
 
-// ========================
-// Owl-Kid Text-to-Speech Function (Default Voice Settings)
-// ========================
-function speakBotMessage(text) {
-  if (!text) return;
+  // ---------- Chat elements ----------
+  const chatBox = document.querySelector(".chat-box");
+  const chatArea = document.getElementById("chatBox");
+  const chatInput = document.getElementById("chatInput");
+  const sendBtn = document.getElementById("sendBtn");
+  const newChatBtn = document.getElementById("newChatBtn");
 
-  const synth = window.speechSynthesis;
-  synth.cancel(); // stop any previous speech
+  // Suggestions
+  const suggestions = document.getElementById("suggestions");
+  const suggestionBtns = document.querySelectorAll("#suggestions button");
+  const closeSuggestions = document.getElementById("closeSuggestions");
 
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.lang = "en-GB"; // UK English
+  let firstMessageSent = false;
 
-  // Pick Google UK English Female if available
-  const voices = synth.getVoices();
-  const selectedVoice = voices.find(v => v.name === "Google UK English Female") || voices[0];
-  utter.voice = selectedVoice;
+  // ========================
+  // TTS Function
+  // ========================
+  function speakBotMessage(text) {
+    if (!text) return;
+    const synth = window.speechSynthesis;
+    synth.cancel();
 
-  // Default rate and pitch (normal, no tweaks)
-  utter.rate = 1.0;
-  utter.pitch = 1.0;
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = "en-GB";
+    const voices = synth.getVoices();
+    const selectedVoice =
+      voices.find((v) => v.name === "Google UK English Female") || voices[0];
+    utter.voice = selectedVoice;
+    utter.rate = 1.0;
+    utter.pitch = 1.0;
 
-  synth.speak(utter);
-}
-
-// Ensure voices are loaded (important on some browsers)
-window.speechSynthesis.onvoiceschanged = () => {
-  console.log("Available voices:", window.speechSynthesis.getVoices());
-};
-
+    synth.speak(utter);
+  }
+  window.speechSynthesis.onvoiceschanged = () =>
+    console.log("Voices loaded:", window.speechSynthesis.getVoices());
 
   // ========================
   // Display Bot Message
   // ========================
   function displayBotMessage(text) {
     const botMsg = document.createElement("div");
-    botMsg.classList.add("bot-msg");
+    botMsg.className = "bot-msg";
     botMsg.textContent = text;
     chatArea.appendChild(botMsg);
     chatArea.scrollTop = chatArea.scrollHeight;
-
-    // Speak the message
     speakBotMessage(text);
   }
 
   // ========================
-  // Display Default Message
+  // Default Welcome
   // ========================
   function addDefaultMessage() {
+    if (!chatArea) return;
     chatArea.innerHTML = "";
     displayBotMessage("👋 Welcome! You may ask anything.");
+    if (chatBox) chatBox.classList.remove("active");
+    firstMessageSent = false;
+    if (suggestions) suggestions.style.display = "block";
   }
-
   addDefaultMessage();
 
   // ========================
-  // Toggle sidebar
-  // ========================
-  toggleBtn.addEventListener("click", () => {
-    sidebar.classList.toggle("collapsed");
-  });
-
-  // ========================
-  // Send message to Rasa
+  // Send Message (with Rasa)
   // ========================
   async function sendMessage() {
-    const message = inputField.value.trim();
-    if (!message) return;
+    if (!chatInput || !chatArea) return;
+    const text = chatInput.value.trim();
+    if (!text) return;
 
-    // Display user message
+    // expand chat on first user msg
+    if (!firstMessageSent && chatBox) {
+      chatBox.classList.add("active");
+      firstMessageSent = true;
+      if (suggestions) suggestions.style.display = "none";
+    }
+
+    // user message
     const userMsg = document.createElement("div");
-    userMsg.classList.add("user-msg");
-    userMsg.textContent = message;
+    userMsg.className = "user-msg";
+    userMsg.textContent = text;
     chatArea.appendChild(userMsg);
-
-    inputField.value = "";
+    chatInput.value = "";
     chatArea.scrollTop = chatArea.scrollHeight;
 
-    // Typing indicator
+    // typing indicator
     const typing = document.createElement("div");
-    typing.classList.add("typing-indicator");
+    typing.className = "typing-indicator";
     typing.innerHTML = "<span></span><span></span><span></span>";
     chatArea.appendChild(typing);
     chatArea.scrollTop = chatArea.scrollHeight;
@@ -97,7 +104,7 @@ window.speechSynthesis.onvoiceschanged = () => {
       const response = await fetch("http://localhost:5005/webhooks/rest/webhook", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sender: "user", message: message }),
+        body: JSON.stringify({ sender: "user", message: text }),
       });
 
       const data = await response.json();
@@ -105,17 +112,14 @@ window.speechSynthesis.onvoiceschanged = () => {
 
       if (data.length > 0) {
         data.forEach((msg) => {
-          // Regular text
           if (msg.text) displayBotMessage(msg.text);
 
-          // Buttons (if any)
           if (msg.buttons) {
             msg.buttons.forEach((btn) => {
               if (btn.title) displayBotMessage(btn.title);
             });
           }
 
-          // Custom payloads
           if (msg.custom) {
             if (msg.custom.text) displayBotMessage(msg.custom.text);
             if (msg.custom.buttons) {
@@ -135,54 +139,128 @@ window.speechSynthesis.onvoiceschanged = () => {
     }
   }
 
-  // ========================
-  // Send button click
-  // ========================
-  sendBtn.addEventListener("click", sendMessage);
+  // Send button + Enter key
+  if (sendBtn) sendBtn.addEventListener("click", sendMessage);
+  if (chatInput) {
+    chatInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+  }
 
-  // ========================
-  // Enter key press
-  // ========================
-  inputField.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      sendMessage();
-    }
-  });
+  if (newChatBtn) {
+    newChatBtn.addEventListener("click", () => {
+      addDefaultMessage();
+    });
+  }
 
-  // ========================
-  // New chat resets everything
-  // ========================
-  newChatBtn.addEventListener("click", () => {
-    addDefaultMessage();
-    suggestions.style.display = "block";
-  });
-
-  // ========================
-  // Suggested questions
-  // ========================
+  // Suggestions
   suggestionBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
-      inputField.value = btn.textContent;
+      chatInput.value = btn.textContent;
       sendMessage();
     });
   });
+  if (closeSuggestions) {
+    closeSuggestions.addEventListener("click", () => {
+      suggestions.style.display = "none";
+    });
+  }
 
   // ========================
-  // Close suggestions
+  // Settings (modal)
   // ========================
-  closeSuggestions.addEventListener("click", () => {
-    suggestions.style.display = "none";
-  });
+  const settingsModalEl = document.getElementById("settingsModal");
+  const bsModal = settingsModalEl
+    ? (bootstrap.Modal.getInstance(settingsModalEl) ||
+        new bootstrap.Modal(settingsModalEl))
+    : null;
+
+  const fontSizeInput = document.getElementById("fontSize");
+  const glowColorInput = document.getElementById("glowColor");
+  const saveBtn = document.getElementById("saveSettings");
+  const resetBtn = document.getElementById("resetSettings");
+  const clearBtn = document.getElementById("clearHistory");
+
+  const DEFAULT_FONT = 16; // px
+  const DEFAULT_GLOW = "#ffffff";
+
+  function applyFontSize(v) {
+    document.documentElement.style.setProperty(
+      "--font-size",
+      (v || DEFAULT_FONT) + "px"
+    );
+  }
+  function applyGlowColor(hex) {
+    document.documentElement.style.setProperty(
+      "--chat-glow",
+      hex || DEFAULT_GLOW
+    );
+  }
+
+  const savedFont = localStorage.getItem("chatFontSize");
+  const savedGlow = localStorage.getItem("chatGlowColor");
+
+  if (fontSizeInput) fontSizeInput.value = savedFont || DEFAULT_FONT;
+  if (glowColorInput) glowColorInput.value = savedGlow || DEFAULT_GLOW;
+
+  applyFontSize(savedFont || DEFAULT_FONT);
+  applyGlowColor(savedGlow || DEFAULT_GLOW);
+
+  if (fontSizeInput) {
+    fontSizeInput.addEventListener("input", (e) => {
+      applyFontSize(e.target.value);
+    });
+  }
+  if (glowColorInput) {
+    glowColorInput.addEventListener("input", (e) => {
+      applyGlowColor(e.target.value);
+    });
+  }
+
+  if (saveBtn) {
+    saveBtn.addEventListener("click", () => {
+      const fontVal = fontSizeInput ? fontSizeInput.value : DEFAULT_FONT;
+      const glowVal = glowColorInput ? glowColorInput.value : DEFAULT_GLOW;
+
+      localStorage.setItem("chatFontSize", fontVal);
+      localStorage.setItem("chatGlowColor", glowVal);
+
+      applyFontSize(fontVal);
+      applyGlowColor(glowVal);
+
+      if (bsModal) bsModal.hide();
+      try {
+        alert("Settings saved.");
+      } catch (e) {}
+    });
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      if (fontSizeInput) fontSizeInput.value = DEFAULT_FONT;
+      if (glowColorInput) glowColorInput.value = DEFAULT_GLOW;
+
+      applyFontSize(DEFAULT_FONT);
+      applyGlowColor(DEFAULT_GLOW);
+
+      localStorage.removeItem("chatFontSize");
+      localStorage.removeItem("chatGlowColor");
+    });
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      localStorage.removeItem("chatHistory");
+      if (chatArea) {
+        chatArea.innerHTML = "";
+        addDefaultMessage();
+      }
+      try {
+        alert("Chat history cleared.");
+      } catch (e) {}
+    });
+  }
 });
-
-
-
-
-
-
-
-
-
-
-
