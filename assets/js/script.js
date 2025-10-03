@@ -9,19 +9,35 @@ document.addEventListener("DOMContentLoaded", () => {
   const suggestionBtns = document.querySelectorAll(".suggestion-buttons button");
   const closeSuggestions = document.querySelector(".close-suggestions");
 
-  // ========================
-  // Text-to-Speech Function
-  // ========================
-  function speakBotMessage(text) {
-    if (!text) return;
-    const synth = window.speechSynthesis;
-    synth.cancel(); // stop previous speech if any
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = "en-US";
-    utter.rate = 1.1;   // slightly faster than normal
-    utter.pitch = 1.3;  // slightly higher pitch for playful tone
-    synth.speak(utter);
-  }
+// ========================
+// Owl-Kid Text-to-Speech Function
+// ========================
+function speakBotMessage(text) {
+  if (!text) return;
+
+  const synth = window.speechSynthesis;
+  synth.cancel(); // stop any previous speech
+
+  // Add a subtle "hoot" effect after periods for owl personality
+  text = text.replace(/\./g, ". 🦉"); 
+
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = "en-US";
+
+  // Kid-like but owl-inspired
+  utter.rate = 1.1 + Math.random() * 0.1;   // 1.1–1.2 speed
+  utter.pitch = 1.25 + Math.random() * 0.15; // 1.25–1.4 pitch
+
+  // Optional: slight delay between sentences (more owl-like pauses)
+  utter.onboundary = function(event) {
+    if (event.name === "word" && Math.random() < 0.02) {
+      synth.pause();
+      setTimeout(() => synth.resume(), 50 + Math.random() * 100);
+    }
+  };
+
+  synth.speak(utter);
+}
 
   // ========================
   // Display Bot Message
@@ -159,4 +175,5 @@ document.addEventListener("DOMContentLoaded", () => {
     suggestions.style.display = "none";
   });
 });
+
 
