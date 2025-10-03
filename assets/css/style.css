@@ -4,8 +4,9 @@
   --bot-msg: #f3f4f6;
   --user-msg: #2563eb;
 
-  /* Maximum label width for smooth collapsing text */
   --label-max-width: 180px;
+  --chat-glow: rgba(37, 99, 235, 0.45);
+  --font-size: 14px;
 }
 
 * {
@@ -18,8 +19,9 @@
 body {
   display: flex;
   height: 100vh;
-  background: url("../images/bg.jpg") no-repeat center center fixed;
+  background: url("bg.jpg") no-repeat center center fixed;
   background-size: cover;
+  color: white;
 }
 
 /* =========================
@@ -33,20 +35,17 @@ body {
   cursor: pointer;
   color: white;
   z-index: 1001;
-
-  /* Use a CSS variable so hover scale doesn't override translateX */
-  --tx: 0;
-  transform: translateX(var(--tx));
+  transform: translateX(0);
   transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .sidebar.collapsed ~ .toggle-btn {
   left: 50%;
-  --tx: -50%;
+  transform: translateX(-50%);
 }
 
 .toggle-btn:hover {
-  transform: translateX(var(--tx)) scale(1.1);
+  transform: scale(1.1) translateX(-50%);
   color: var(--primary-light);
 }
 
@@ -63,10 +62,7 @@ body {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
-  transition:
-    width 0.35s cubic-bezier(0.25, 1, 0.5, 1),
-    padding 0.3s ease,
-    background 0.3s ease;
+  transition: width 0.35s ease, padding 0.3s ease, background 0.3s ease;
   color: white;
   padding-top: 60px;
 }
@@ -77,47 +73,36 @@ body {
 }
 
 /* =========================
-   Logo
+   Logo & Title
    ========================= */
 .logo {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-  padding: 10px 0;
-  transition: all 0.3s ease;
+  gap: 8px;
+  padding: 12px 16px;
+  justify-content: flex-start;
 }
 
 .logo img {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  transition: all 0.3s ease;
 }
 
-/* Text label animation: collapse only the text, keep icon visible */
-.logo h1 {
-  font-size: 18px;
-  margin: 0;
+.logo .title {
+  font-size: 1.25rem;
+  font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
-  display: inline-block;
-  max-width: var(--label-max-width);
+  max-width: 200px;
   opacity: 1;
-  transition: max-width 0.35s cubic-bezier(0.25, 1, 0.5, 1),
-              opacity 0.25s ease,
-              margin 0.25s ease;
+  transition: max-width 0.3s ease, opacity 0.3s ease;
 }
 
-.sidebar.collapsed .logo h1 {
+.sidebar.collapsed .logo .title {
   max-width: 0;
   opacity: 0;
-  margin: 0;
-}
-
-/* Center logo when collapsed */
-.sidebar.collapsed .logo {
-  justify-content: center;
 }
 
 /* =========================
@@ -130,58 +115,43 @@ nav ul {
   width: 100%;
 }
 
-nav ul li {
-  padding: 12px;
+nav ul li a {
   display: flex;
   align-items: center;
   gap: 12px;
   font-size: 15px;
   color: rgba(255, 255, 255, 0.85);
-  cursor: pointer;
   border-radius: 8px;
   margin: 4px 8px;
-  transition: background 0.2s ease, color 0.2s ease, gap 0.3s ease;
+  padding: 12px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-nav ul li:hover {
-  background: rgba(255, 255, 255, 0.15);
+nav ul li a:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 12px var(--chat-glow);
+  background: rgba(255, 255, 255, 0.25);
   color: white;
 }
 
-/* Keep buttons/icons visible; only collapse text */
-nav ul li span {
-  display: inline-block;
+nav ul li a span {
   white-space: nowrap;
   overflow: hidden;
   max-width: var(--label-max-width);
   opacity: 1;
-  transition: max-width 0.35s cubic-bezier(0.25, 1, 0.5, 1),
-              opacity 0.25s ease,
-              margin 0.25s ease;
+  transition: max-width 0.35s ease, opacity 0.25s ease;
 }
 
-/* Collapsed: center items and hide only text smoothly */
-.sidebar.collapsed nav ul li {
+.sidebar.collapsed nav ul li a {
   justify-content: center;
   gap: 0;
 }
 
-.sidebar.collapsed nav ul li span {
+.sidebar.collapsed nav ul li a span {
   max-width: 0;
   opacity: 0;
-  margin: 0;
-}
-
-/* Optional subtle entrance on expand (text only) */
-@keyframes labelSlideIn {
-  from { opacity: 0; transform: translateX(-8px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-.sidebar:not(.collapsed) nav ul li span,
-.sidebar:not(.collapsed) .logo h1,
-.sidebar:not(.collapsed) .new-chat span {
-  animation: labelSlideIn 0.28s ease;
 }
 
 /* =========================
@@ -200,35 +170,32 @@ nav ul li span {
   justify-content: center;
   gap: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   backdrop-filter: blur(8px);
   width: calc(100% - 32px);
+  position: relative;
 }
 
 .new-chat:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 12px var(--chat-glow);
   background: rgba(255, 255, 255, 0.25);
-  transform: scale(1.05);
 }
 
-/* Only collapse its label text, keep icon visible */
 .new-chat span {
   display: inline-block;
+  max-width: 200px;
+  opacity: 1;
   white-space: nowrap;
   overflow: hidden;
-  max-width: var(--label-max-width);
-  opacity: 1;
-  transition: max-width 0.35s cubic-bezier(0.25, 1, 0.5, 1),
-              opacity 0.25s ease,
-              margin 0.25s ease;
+  transition: max-width 0.3s ease, opacity 0.3s ease;
 }
 
 .sidebar.collapsed .new-chat span {
   max-width: 0;
   opacity: 0;
-  margin: 0;
 }
 
-/* Center "new chat" button when collapsed */
 .sidebar.collapsed .new-chat {
   justify-content: center;
   gap: 0;
@@ -242,31 +209,49 @@ nav ul li span {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: margin-left 0.3s ease;
   margin-left: 240px;
+  transition: margin-left 0.3s ease;
 }
 
 .sidebar.collapsed ~ .chat-container {
   margin-left: 70px;
 }
 
+/* =========================
+   Chat Box
+   ========================= */
 .chat-box {
-  width: 100%;
-  max-width: 700px;
-  height: 80%;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  width: 50%;
+  height: 40%;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 16px;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  justify-content: flex-start;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  font-size: var(--font-size);
+  overflow: hidden;
+  z-index: 1;
+  transition: width 0.6s ease, height 0.6s ease,
+              box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.chat-box.active {
+  width: 90%;
+  height: 80%;
+}
+
+.chat-box:hover {
+  box-shadow: 0 6px 24px var(--chat-glow);
+  transform: translateY(-3px);
 }
 
 /* =========================
-   Chat Area
+   Chat Messages
    ========================= */
 .chat-area {
   flex: 1;
@@ -277,20 +262,13 @@ nav ul li span {
   gap: 12px;
 }
 
-/* Message Animations */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 .user-msg,
 .bot-msg {
   padding: 10px 14px;
   border-radius: 12px;
   max-width: 70%;
-  font-size: 14px;
+  font-size: var(--font-size);
   line-height: 1.4;
-  animation: fadeInUp 0.3s ease;
 }
 
 .user-msg {
@@ -305,9 +283,7 @@ nav ul li span {
   color: black;
 }
 
-/* =========================
-   Typing Indicator
-   ========================= */
+/* Typing indicator */
 .typing-indicator {
   align-self: flex-start;
   background: var(--bot-msg);
@@ -315,21 +291,23 @@ nav ul li span {
   gap: 4px;
   border-radius: 12px;
   padding: 8px 12px;
-  animation: fadeInUp 0.3s ease;
 }
+
 .typing-indicator span {
   width: 6px;
   height: 6px;
   background: #6b7280;
   border-radius: 50%;
   display: inline-block;
-  animation: blink 1.4s infinite both;
+  animation: pulse 1.2s infinite;
 }
+
 .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
 .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes blink {
-  0%, 80%, 100% { opacity: 0.3; }
-  40% { opacity: 1; }
+
+@keyframes pulse {
+  0%, 100% { transform: scale(0.8); opacity: 0.3; }
+  50% { transform: scale(1.2); opacity: 1; }
 }
 
 /* =========================
@@ -342,7 +320,6 @@ nav ul li span {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(8px);
-  animation: fadeInUp 0.4s ease;
 }
 
 .suggestion-header {
@@ -351,21 +328,11 @@ nav ul li span {
   align-items: center;
   margin-bottom: 8px;
   color: white;
-  font-size: 14px;
+  font-size: var(--font-size);
 }
 
-.suggestion-header .close-suggestions {
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
 .suggestion-header .close-suggestions:hover {
   color: var(--primary-light);
-}
-
-.suggestion-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
 }
 
 .suggestion-buttons button {
@@ -376,8 +343,9 @@ nav ul li span {
   font-size: 13px;
   color: white;
   cursor: pointer;
+  margin: 4px;
   backdrop-filter: blur(6px);
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .suggestion-buttons button:hover {
@@ -386,24 +354,29 @@ nav ul li span {
 }
 
 /* =========================
-   Input
+   Input Area
    ========================= */
 .input-area {
   display: flex;
   gap: 8px;
   margin-top: 12px;
+  width: 100%;
 }
 
 .input-area input {
   flex: 1;
+  min-width: 0;
   border-radius: 12px;
   border: 1px solid #d1d5db;
   padding: 10px 14px;
+  font-size: var(--font-size);
   outline: none;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
 }
 
 .input-area input:focus {
   border-color: var(--primary);
+  box-shadow: 0 0 8px var(--chat-glow);
 }
 
 .input-area button {
@@ -413,20 +386,99 @@ nav ul li span {
   background: var(--primary);
   color: white;
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.3s;
 }
 
 .input-area button:hover {
   background: var(--primary-light);
+  transform: translateY(-2px);
 }
 
 /* =========================
-   Motion Preferences
+   Settings Modal (Glassy)
    ========================= */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation: none !important;
-    transition: none !important;
-  }
+.modal-content {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  color: white;
+  transition: all 0.3s ease;
 }
 
+.modal-header, .modal-footer {
+  border: none;
+}
+
+.modal-content input,
+.modal-content .form-control,
+.modal-content .form-range {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: white;
+  backdrop-filter: blur(8px);
+}
+
+/* Modal Buttons */
+.modal-footer .btn {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(6px);
+}
+
+.modal-footer .btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 12px var(--chat-glow);
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* =========================
+   Glassy Utilities
+   ========================= */
+.glassy-tabs .nav-link {
+  color: white;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  margin-right: 8px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.glassy-tabs .nav-link.active,
+.glassy-tabs .nav-link:hover {
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 12px var(--chat-glow);
+}
+
+.glassy-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.glassy-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--chat-glow);
+}
+
+.glassy-btn {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(6px);
+}
+
+.glassy-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 12px var(--chat-glow);
+  background: rgba(255, 255, 255, 0.25);
+}
