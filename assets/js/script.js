@@ -18,21 +18,12 @@ function speakBotMessage(text) {
   const synth = window.speechSynthesis;
   synth.cancel(); // stop any previous speech
 
-  // Insert subtle owl "hoo" at random points
-  text = text.replace(/\./g, () => {
-    return Math.random() < 0.5 ? ". Hoo hoo! 🦉" : ".";
-  });
-
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = "en-US";
 
-  // Pick a playful/female voice if available
+  // Pick Google UK English Female if available
   const voices = synth.getVoices();
-  const selectedVoice =
-    voices.find(v =>
-      (v.name.toLowerCase().includes("female") || v.name.toLowerCase().includes("child") || v.name.toLowerCase().includes("zira"))
-      && v.lang === "en-US"
-    ) || voices[0]; // fallback to first voice
+  const selectedVoice = voices.find(v => v.name === "Google UK English Female") || voices[0];
   utter.voice = selectedVoice;
 
   // Randomized kid-owl style
@@ -46,6 +37,7 @@ function speakBotMessage(text) {
 window.speechSynthesis.onvoiceschanged = () => {
   console.log("Available voices:", window.speechSynthesis.getVoices());
 };
+
 
   // ========================
   // Display Bot Message
@@ -183,6 +175,7 @@ window.speechSynthesis.onvoiceschanged = () => {
     suggestions.style.display = "none";
   });
 });
+
 
 
 
